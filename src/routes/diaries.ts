@@ -1,10 +1,11 @@
-import express from 'express';
+import express, { Response } from 'express';
 import dairyService from '../services/dairyService';
+import { DairyEntry } from '../../types';
 
 const router = express.Router();
 
-router.get('/', (_req, res) => {
-  res.json(dairyService.getEntries());
+router.get('/', (_req, res: Response<DairyEntry[]>) => {
+  res.json(dairyService.getNonSensitiveEntries());
 });
 
 router.post('/', (_req, res) => {

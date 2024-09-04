@@ -7,5 +7,7 @@ export interface DairyEntry {
   date: string
   weather: Weather
   visibility: Visibility
-  comment: string
+  comment?: string
 }
+
+export type NonSensitiveDairyEntry = Omit<DairyEntry, 'comment'>;
