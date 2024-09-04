@@ -11,3 +11,5 @@ export interface DairyEntry {
 }
 
 export type NonSensitiveDairyEntry = Omit<DairyEntry, 'comment'>;
+
+export type NewDairyEntry = Omit<DairyEntry, 'id'>;
