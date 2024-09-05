@@ -1,6 +1,7 @@
 import express from 'express';
 import dairyService from '../services/dairyService';
 import { toNewDairyEntry } from '../utils';
+import { z } from 'zod';
 
 const router = express.Router();
 
@@ -24,11 +25,11 @@ router.post('/', (req, res) => {
     const addedEntry = dairyService.addEntry(newDairyEntry);
     res.json(addedEntry);
   } catch (error) {
-    let errorMessage = 'Something went wrong. ';
-    if (error instanceof Error) {
-      errorMessage += error.message;
+    if (error instanceof z.ZodError) {
+      res.status(400).send({ error: error.issues });
+    } else {
+      res.status(400).send({ error: 'unknown error' });
     }
-    res.status(400).send(errorMessage);
   }
 });
 
