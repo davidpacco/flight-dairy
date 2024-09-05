@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import express, { Response } from 'express';
+import express from 'express';
 import dairyService from '../services/dairyService';
-import { DairyEntry } from '../../types';
+import { toNewDairyEntry } from '../utils';
 
 const router = express.Router();
 
-router.get('/', (_req, res: Response<DairyEntry[]>) => {
+router.get('/', (_req, res) => {
   res.json(dairyService.getNonSensitiveEntries());
 });
 
@@ -20,16 +19,17 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { date, weather, visibility, comment } = req.body;
-
-  const addedEntry = dairyService.addEntry({
-    date,
-    weather,
-    visibility,
-    comment
-  });
-
-  res.json(addedEntry);
+  try {
+    const newDairyEntry = toNewDairyEntry(req.body);
+    const addedEntry = dairyService.addEntry(newDairyEntry);
+    res.json(addedEntry);
+  } catch (error) {
+    let errorMessage = 'Something went wrong. ';
+    if (error instanceof Error) {
+      errorMessage += error.message;
+    }
+    res.status(400).send(errorMessage);
+  }
 });
 
 export default router;

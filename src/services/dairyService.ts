@@ -1,11 +1,11 @@
 import diaries from '../../data/entries';
-import { DairyEntry, NewDairyEntry } from '../../types';
+import { DairyEntry, NewDairyEntry, NonSensitiveDairyEntry } from '../types';
 
 const getEntries = (): DairyEntry[] => {
   return diaries;
 };
 
-const getNonSensitiveEntries = (): DairyEntry[] => {
+const getNonSensitiveEntries = (): NonSensitiveDairyEntry[] => {
   return diaries.map(({ id, date, visibility, weather }) => ({
     id,
     date,
@@ -14,7 +14,7 @@ const getNonSensitiveEntries = (): DairyEntry[] => {
   }));
 };
 
-const addEntry = (entry: NewDairyEntry) => {
+const addEntry = (entry: NewDairyEntry): DairyEntry => {
 
   const newDairy = {
     id: Math.max(...diaries.map(d => d.id)) + 1,
