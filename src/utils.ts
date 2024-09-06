@@ -1,13 +1,9 @@
-import { NewDairyEntry, Visibility, Weather } from "./types";
+import { Visibility, Weather } from "./types";
 import { z } from 'zod';
 
-export const newEntrySchema = z.object({
+export const NewEntrySchema = z.object({
   date: z.string().date(),
   weather: z.nativeEnum(Weather),
   visibility: z.nativeEnum(Visibility),
-  comment: z.string()
+  comment: z.string().optional()
 });
-
-export const toNewDairyEntry = (object: unknown): NewDairyEntry => {
-  return newEntrySchema.parse(object);
-};
